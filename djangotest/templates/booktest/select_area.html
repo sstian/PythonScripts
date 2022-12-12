@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下拉选择</title>
+    <script src="/static/js/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function () {
+            // 获取信息，使用get；信息修改，使用post
+            // 发起AJAX请求 /prov，获取所有省级数据
+            $.get("/prov", function (data) {
+                // 回调函数
+                res = data.data;    // 获取数据，元素=[地区id, 地区标题]
+                prov = $("#prov");  // 获取下拉列表框
+                // for(var i = 0; i < res.length; i++) {
+                //     id = res[i][0];
+                //     atitle = res[i][1];
+                // }
+                $.each(res, function (index, item) {
+                    console.log(index);
+                    console.log(item);
+                    // 获取数据，追加元素
+                    id = item[0];
+                    atitle = item[1];
+                    option_str = "<option value='" + id + "'>" + atitle + "</option>";
+                    prov.append(option_str);
+                })
+            });
+
+            // $.post("prov", {"num": 1}, function (data) {
+            //
+            // });
+            
+            // 绑定prov下拉列表的chagne事件，获取省下面市的信息
+            $("#prov").change(function () {
+                // 发起AJAX请求 /city，获取所有市级数据
+                prov_id = $(this).val();
+                $.get("/city"+prov_id, function (data) {
+                    res = data.data;
+                    city = $("#city");
+                    // 先清空数据
+                    city.empty().append("<option>---请选择市---</option>");
+                    dist = $("#dist");
+                    dist.empty().append("<option>---请选择县---</option>");
+                    $.each(res, function (index, item) {
+                        id = item[0];
+                        atitle = item[1];
+                        option_str = "<option value='" + id + "'>" + atitle + "</option>";
+                        city.append(option_str);
+                    })
+                })
+                
+            });
+
+            // 绑定city下拉列表的chagne事件，获取市下面县的信息
+            $("#city").change(function () {
+                // 发起AJAX请求 /city，获取所有市级数据
+                prov_id = $(this).val();
+                $.get("/city"+prov_id, function (data) {
+                    res = data.data;
+                    // 先清空数据
+                    dist = $("#dist");
+                    dist.empty().append("<option>---请选择县---</option>");
+                    $.each(res, function (index, item) {
+                        id = item[0];
+                        atitle = item[1];
+                        option_str = "<option value='" + id + "'>" + atitle + "</option>";
+                        dist.append(option_str);
+                    })
+                })
+            });
+
+        })
+    </script>
+</head>
+<body>
+<select id="prov">
+    <option>---请选择省---</option>
+</select>
+<select id="city">
+    <option>---请选择市---</option>
+</select>
+<select id="dist">
+    <option>---请选择县---</option>
+</select>
+</body>
+</html>

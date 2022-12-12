@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>url反向解析</title>
+</head>
+<body>
+url反向解析：
+<a href="{% url 'booktest:index' %}">index</a><br/>
+动态产生位置参数：
+<a href="{% url 'booktest:show_args' 1 2 %}">show_args</a><br/>
+动态产生关键字参数：
+<a href="{% url 'booktest:show_kwargs' c=3 d=4 %}">show_kwargs</a><br/>
+</body>
+</html>
