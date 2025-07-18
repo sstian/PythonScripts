@@ -1,0 +1,4 @@
+pyramid==2.0.2
+pyramid_chameleon==0.3
+pyramid_jinja2==2.10.1
+waitress==3.0.2
